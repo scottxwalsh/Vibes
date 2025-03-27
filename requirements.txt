@@ -2,4 +2,9 @@ ccxt==4.2.14
 pandas==2.2.0
 numpy==1.26.3
 python-dotenv==1.0.1
-ta==0.11.0  # Technical Analysis library 
+ta==0.11.0  # Technical Analysis library
+tweepy==4.14.0  # Twitter API
+newsapi-python==0.2.7  # News API
+textblob==0.17.1  # Sentiment analysis
+nltk==3.8.1  # Natural Language Processing
+requests==2.31.0  # HTTP requests 

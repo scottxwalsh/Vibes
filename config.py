@@ -25,4 +25,28 @@ MACD_SIGNAL = 9
 # Risk management
 STOP_LOSS_PERCENTAGE = 2  # Stop loss percentage
 TAKE_PROFIT_PERCENTAGE = 4  # Take profit percentage
-MAX_OPEN_TRADES = 1  # Maximum number of open trades 
+MAX_OPEN_TRADES = 1  # Maximum number of open trades
+
+# Sentiment Analysis Configuration
+TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
+TWITTER_API_SECRET = os.getenv('TWITTER_API_SECRET')
+TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
+TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
+
+# Sentiment Analysis Parameters
+SENTIMENT_WEIGHT = 0.3  # Weight of sentiment in final decision (0-1)
+TECHNICAL_WEIGHT = 0.7  # Weight of technical analysis in final decision (0-1)
+SENTIMENT_THRESHOLD = 0.2  # Minimum sentiment score to trigger a signal
+LOOKBACK_PERIOD = 24  # Hours to look back for sentiment analysis
+MIN_TWEETS = 100  # Minimum number of tweets to analyze
+MIN_NEWS_ARTICLES = 10  # Minimum number of news articles to analyze
+
+# Keywords for sentiment analysis
+CRYPTO_KEYWORDS = [
+    'bitcoin', 'btc', 'crypto', 'cryptocurrency', 'blockchain',
+    'ethereum', 'eth', 'defi', 'nft', 'web3'
+]
+
+# Sentiment Analysis Timeframes
+SENTIMENT_UPDATE_INTERVAL = 3600  # Update sentiment every hour (in seconds) 
