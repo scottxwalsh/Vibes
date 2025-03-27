@@ -124,10 +124,10 @@ class TradingBot:
             
             # Check balance
             balance = self.exchange.fetch_balance()
-            usdt_balance = balance['USDT']['free']
+            usdc_balance = balance['USDC']['free']
             
-            if usdt_balance < MIN_BALANCE_REQUIRED:
-                logger.warning(f"Insufficient balance: ${usdt_balance:.2f} USDT")
+            if usdc_balance < MIN_BALANCE_REQUIRED:
+                logger.warning(f"Insufficient balance: ${usdc_balance:.2f} USDC")
                 return False
             
             # Check position size

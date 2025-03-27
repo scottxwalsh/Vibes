@@ -10,7 +10,7 @@ EXCHANGE_API_KEY = os.getenv('EXCHANGE_API_KEY')
 EXCHANGE_SECRET = os.getenv('EXCHANGE_SECRET')
 
 # Trading parameters
-TRADING_PAIR = 'BTC/USDT'  # The trading pair to trade
+TRADING_PAIR = 'BTC/USDC'  # Changed from BTC/USDT to BTC/USDC
 TIMEFRAME = '1h'  # Timeframe for analysis (1m, 5m, 15m, 1h, 4h, 1d)
 POSITION_SIZE = 0.001  # Size of each trade in BTC
 
@@ -23,12 +23,12 @@ MA_SLOW = 26
 MACD_SIGNAL = 9
 
 # Risk management
-STOP_LOSS_PERCENTAGE = 2  # Stop loss percentage
-TAKE_PROFIT_PERCENTAGE = 4  # Take profit percentage
+STOP_LOSS_PERCENTAGE = 1.5  # Reduced from 2% to 1.5% for USDC's lower volatility
+TAKE_PROFIT_PERCENTAGE = 3  # Reduced from 4% to 3% for more frequent trades
 MAX_OPEN_TRADES = 1  # Maximum number of open trades
-MAX_DAILY_LOSS = 5  # Maximum daily loss percentage
+MAX_DAILY_LOSS = 3  # Reduced from 5% to 3% for more conservative USDC trading
 MAX_POSITION_SIZE = 0.01  # Maximum position size in BTC
-MIN_BALANCE_REQUIRED = 100  # Minimum USDT balance required
+MIN_BALANCE_REQUIRED = 200  # Increased from 100 to 200 USDC for better liquidity
 
 # Sentiment Analysis Configuration
 TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
@@ -38,17 +38,17 @@ TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
 # Sentiment Analysis Parameters
-SENTIMENT_WEIGHT = 0.3  # Weight of sentiment in final decision (0-1)
-TECHNICAL_WEIGHT = 0.7  # Weight of technical analysis in final decision (0-1)
-SENTIMENT_THRESHOLD = 0.2  # Minimum sentiment score to trigger a signal
+SENTIMENT_WEIGHT = 0.25  # Reduced from 0.3 to 0.25 for more conservative sentiment influence
+TECHNICAL_WEIGHT = 0.75  # Increased from 0.7 to 0.75 for stronger technical analysis influence
+SENTIMENT_THRESHOLD = 0.25  # Increased from 0.2 to 0.25 for more conservative sentiment signals
 LOOKBACK_PERIOD = 24  # Hours to look back for sentiment analysis
-MIN_TWEETS = 100  # Minimum number of tweets to analyze
-MIN_NEWS_ARTICLES = 10  # Minimum number of news articles to analyze
+MIN_TWEETS = 150  # Increased from 100 to 150 for more reliable sentiment analysis
+MIN_NEWS_ARTICLES = 15  # Increased from 10 to 15 for more reliable news sentiment
 
 # Keywords for sentiment analysis
 CRYPTO_KEYWORDS = [
     'bitcoin', 'btc', 'crypto', 'cryptocurrency', 'blockchain',
-    'ethereum', 'eth', 'defi', 'nft', 'web3'
+    'ethereum', 'eth', 'defi', 'nft', 'web3', 'usdc', 'stablecoin'
 ]
 
 # Sentiment Analysis Timeframes
@@ -56,11 +56,11 @@ SENTIMENT_UPDATE_INTERVAL = 1800  # Update sentiment every 30 minutes (in second
 VOLATILITY_CHECK_INTERVAL = 300  # Check for high volatility every 5 minutes
 
 # Volatility Analysis Parameters
-HIGH_VOLATILITY_THRESHOLD = 0.02  # 2% price change threshold for high volatility
+HIGH_VOLATILITY_THRESHOLD = 0.015  # Reduced from 0.02 to 0.015 for USDC's lower volatility
 VOLATILITY_WINDOW = 20  # Number of periods to calculate volatility
-VOLATILITY_MULTIPLIER = 2.0  # Standard deviation multiplier for volatility
-MAX_VOLATILITY_THRESHOLD = 0.05  # 5% maximum allowed volatility
-VOLUME_SPIKE_THRESHOLD = 2.0  # Volume spike threshold (x times average)
+VOLATILITY_MULTIPLIER = 1.8  # Reduced from 2.0 to 1.8 for more conservative volatility detection
+MAX_VOLATILITY_THRESHOLD = 0.03  # Reduced from 0.05 to 0.03 for USDC's lower volatility
+VOLUME_SPIKE_THRESHOLD = 2.5  # Increased from 2.0 to 2.5 for more reliable volume spike detection
 
 # Logging Configuration
 LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR
@@ -71,5 +71,5 @@ LOG_TO_CONSOLE = True
 
 # Market Condition Parameters
 MARKET_TREND_WINDOW = 24  # Hours to determine market trend
-MIN_VOLUME_REQUIRED = 1000000  # Minimum 24h volume required in USDT
-MAX_SPREAD_PERCENTAGE = 0.5  # Maximum allowed spread percentage 
+MIN_VOLUME_REQUIRED = 2000000  # Increased from 1M to 2M USDC for better liquidity
+MAX_SPREAD_PERCENTAGE = 0.3  # Reduced from 0.5 to 0.3 for tighter USDC spreads 
