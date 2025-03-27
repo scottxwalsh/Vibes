@@ -26,6 +26,9 @@ MACD_SIGNAL = 9
 STOP_LOSS_PERCENTAGE = 2  # Stop loss percentage
 TAKE_PROFIT_PERCENTAGE = 4  # Take profit percentage
 MAX_OPEN_TRADES = 1  # Maximum number of open trades
+MAX_DAILY_LOSS = 5  # Maximum daily loss percentage
+MAX_POSITION_SIZE = 0.01  # Maximum position size in BTC
+MIN_BALANCE_REQUIRED = 100  # Minimum USDT balance required
 
 # Sentiment Analysis Configuration
 TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
@@ -49,4 +52,24 @@ CRYPTO_KEYWORDS = [
 ]
 
 # Sentiment Analysis Timeframes
-SENTIMENT_UPDATE_INTERVAL = 3600  # Update sentiment every hour (in seconds) 
+SENTIMENT_UPDATE_INTERVAL = 1800  # Update sentiment every 30 minutes (in seconds)
+VOLATILITY_CHECK_INTERVAL = 300  # Check for high volatility every 5 minutes
+
+# Volatility Analysis Parameters
+HIGH_VOLATILITY_THRESHOLD = 0.02  # 2% price change threshold for high volatility
+VOLATILITY_WINDOW = 20  # Number of periods to calculate volatility
+VOLATILITY_MULTIPLIER = 2.0  # Standard deviation multiplier for volatility
+MAX_VOLATILITY_THRESHOLD = 0.05  # 5% maximum allowed volatility
+VOLUME_SPIKE_THRESHOLD = 2.0  # Volume spike threshold (x times average)
+
+# Logging Configuration
+LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR
+LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
+LOG_FILE = 'trading_bot.log'
+LOG_TO_FILE = True
+LOG_TO_CONSOLE = True
+
+# Market Condition Parameters
+MARKET_TREND_WINDOW = 24  # Hours to determine market trend
+MIN_VOLUME_REQUIRED = 1000000  # Minimum 24h volume required in USDT
+MAX_SPREAD_PERCENTAGE = 0.5  # Maximum allowed spread percentage 
