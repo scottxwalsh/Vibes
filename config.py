@@ -37,6 +37,21 @@ TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
 TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
+# Reddit API Configuration
+REDDIT_CLIENT_ID = os.getenv('REDDIT_CLIENT_ID')
+REDDIT_CLIENT_SECRET = os.getenv('REDDIT_CLIENT_SECRET')
+REDDIT_USER_AGENT = 'Crypto Trading Bot v1.0'
+
+# Reddit Subreddits to Monitor
+REDDIT_SUBREDDITS = [
+    'Bitcoin',
+    'CryptoCurrency',
+    'CryptoMarkets',
+    'BitcoinMarkets',
+    'CryptoTechnology',
+    'CryptoMoonShots'
+]
+
 # Sentiment Analysis Parameters
 SENTIMENT_WEIGHT = 0.25  # Reduced from 0.3 to 0.25 for more conservative sentiment influence
 TECHNICAL_WEIGHT = 0.75  # Increased from 0.7 to 0.75 for stronger technical analysis influence
@@ -44,6 +59,13 @@ SENTIMENT_THRESHOLD = 0.25  # Increased from 0.2 to 0.25 for more conservative s
 LOOKBACK_PERIOD = 24  # Hours to look back for sentiment analysis
 MIN_TWEETS = 150  # Increased from 100 to 150 for more reliable sentiment analysis
 MIN_NEWS_ARTICLES = 15  # Increased from 10 to 15 for more reliable news sentiment
+MIN_REDDIT_POSTS = 50  # Minimum number of Reddit posts to analyze
+MIN_REDDIT_COMMENTS = 200  # Minimum number of Reddit comments to analyze
+
+# Sentiment Source Weights
+TWITTER_WEIGHT = 0.5  # Increased from 0.4 to 0.5 for highest priority
+NEWS_WEIGHT = 0.3  # Kept at 0.3 for second priority
+REDDIT_WEIGHT = 0.2  # Reduced from 0.3 to 0.2 for lowest priority
 
 # Keywords for sentiment analysis
 CRYPTO_KEYWORDS = [

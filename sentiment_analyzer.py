@@ -4,8 +4,10 @@ from textblob import TextBlob
 import nltk
 from datetime import datetime, timedelta
 import pandas as pd
+import praw
 from config import *
 import numpy as np
+import logging
 
 class SentimentAnalyzer:
     def __init__(self):
@@ -17,6 +19,13 @@ class SentimentAnalyzer:
         # Initialize News API
         self.news_api = NewsApiClient(api_key=NEWS_API_KEY)
         
+        # Initialize Reddit API
+        self.reddit = praw.Reddit(
+            client_id=REDDIT_CLIENT_ID,
+            client_secret=REDDIT_CLIENT_SECRET,
+            user_agent=REDDIT_USER_AGENT
+        )
+        
         # Download required NLTK data
         try:
             nltk.data.find('vader_lexicon')
@@ -24,7 +33,13 @@ class SentimentAnalyzer:
             nltk.download('vader_lexicon')
         
         # Initialize sentiment history
-        self.sentiment_history = pd.DataFrame(columns=['timestamp', 'twitter_sentiment', 'news_sentiment', 'combined_sentiment'])
+        self.sentiment_history = pd.DataFrame(columns=[
+            'timestamp', 'twitter_sentiment', 'news_sentiment', 
+            'reddit_sentiment', 'combined_sentiment'
+        ])
+        
+        # Set up logging
+        self.logger = logging.getLogger('sentiment_analyzer')
         
     def analyze_twitter_sentiment(self):
         """Analyze sentiment from Twitter posts"""
@@ -45,7 +60,7 @@ class SentimentAnalyzer:
                     tweets.append(tweet.full_text)
                     
             except tweepy.TweepError as e:
-                print(f"Error fetching tweets: {e}")
+                self.logger.error(f"Error fetching tweets: {e}")
                 continue
         
         if len(tweets) < MIN_TWEETS:
@@ -83,7 +98,7 @@ class SentimentAnalyzer:
                     articles.append(text)
                     
         except Exception as e:
-            print(f"Error fetching news: {e}")
+            self.logger.error(f"Error fetching news: {e}")
             return None
         
         # Analyze sentiment of articles
@@ -95,22 +110,64 @@ class SentimentAnalyzer:
         avg_sentiment = sum(sentiment_scores) / len(sentiment_scores)
         return avg_sentiment
     
+    def analyze_reddit_sentiment(self):
+        """Analyze sentiment from Reddit posts and comments"""
+        posts = []
+        comments = []
+        sentiment_scores = []
+        
+        try:
+            # Get posts from specified subreddits
+            for subreddit_name in REDDIT_SUBREDDITS:
+                subreddit = self.reddit.subreddit(subreddit_name)
+                
+                # Get hot posts
+                for post in subreddit.hot(limit=10):
+                    posts.append(post.title)
+                    # Get top comments
+                    post.comments.replace_more(limit=0)  # Remove MoreComments objects
+                    for comment in post.comments.list()[:20]:  # Get top 20 comments
+                        if hasattr(comment, 'body'):
+                            comments.append(comment.body)
+            
+            if len(posts) < MIN_REDDIT_POSTS or len(comments) < MIN_REDDIT_COMMENTS:
+                return None
+            
+            # Analyze sentiment of posts and comments
+            for text in posts + comments:
+                analysis = TextBlob(text)
+                sentiment_scores.append(analysis.sentiment.polarity)
+            
+            # Calculate average sentiment
+            avg_sentiment = sum(sentiment_scores) / len(sentiment_scores)
+            return avg_sentiment
+            
+        except Exception as e:
+            self.logger.error(f"Error fetching Reddit data: {e}")
+            return None
+    
     def calculate_combined_sentiment(self):
         """Calculate combined sentiment from all sources"""
         twitter_sentiment = self.analyze_twitter_sentiment()
         news_sentiment = self.analyze_news_sentiment()
+        reddit_sentiment = self.analyze_reddit_sentiment()
         
-        if twitter_sentiment is None or news_sentiment is None:
+        if any(sentiment is None for sentiment in [twitter_sentiment, news_sentiment, reddit_sentiment]):
             return None
         
         # Weight the different sentiment sources
-        combined_sentiment = (twitter_sentiment * 0.6 + news_sentiment * 0.4)
+        combined_sentiment = (
+            twitter_sentiment * TWITTER_WEIGHT +
+            news_sentiment * NEWS_WEIGHT +
+            reddit_sentiment * REDDIT_WEIGHT
+        )
         
         # Store in history
         self.sentiment_history = self.sentiment_history.append({
             'timestamp': datetime.now(),
             'twitter_sentiment': twitter_sentiment,
             'news_sentiment': news_sentiment,
+            'reddit_sentiment': reddit_sentiment,
             'combined_sentiment': combined_sentiment
         }, ignore_index=True)
         
